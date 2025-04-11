@@ -547,13 +547,16 @@
                                 <label for="skills">Ujuzi</label>
                                 <select id="skills" class="form-control" required>
                                     <option value="">Chagua</option>
-                                    <option value="Learner Level">Learner Level</option>
-                                    <option value="Middle Stage Level">Middle Stage Level</option>
-                                    <option value="Expert Level">Expert Level</option>
-                                    <option value="Ultra Expert Level">Ultra Expert Level</option>
+                                    <option value="Programming (HTML, CSS, JavaScript, Python, n.k.) ">Programming (HTML, CSS, JavaScript, Python, n.k.)</option>
+                                    <option value="Networking">Networking</option>
+                                    <option value="Cybersecurity">Cybersecurity</option>
+                                    <option value="Software & Hardware Troubleshooting">Software & Hardware Troubleshooting</option>
                                 </select>
-                            </div>
+                            </div><option value="Database management">database management</option>
                         </div>
+                        <option value="AIand emerging technology">AI and emerging technology</option>
+                        <option value="learner level">leaner level</option>
+                        <option value="graphics design">graphics design</option>
                         <button type="submit" class="btn"><i class="fas fa-paper-plane"></i> Jisajili</button>
                     </form>
                     <button class="btn" id="showFormBtn"><i class="fas fa-user-plus"></i> Jisajili</button>
@@ -1068,7 +1071,7 @@
             const fullName = document.getElementById('fullName').value;
             const phone = document.getElementById('phone').value;
             const region = document.getElementById('region').value;
-            const skills = document.getElementById('skills').value;
+            const skills = document.getElementById('ujuzi wako').value;
 
             const registrationKey = `registered-${phone}`;
             if (localStorage.getItem(registrationKey)) {
@@ -1106,7 +1109,7 @@
                     <td>${member.fullName}</td>
                     <td>${member.phone}</td>
                     <td>${member.region}</td>
-                    <td>${member.skills}</td>
+                    <td>${member.chagua ujuzi wako}</td>
                 `;
                 tbody.appendChild(tr);
             });
