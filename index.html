@@ -490,117 +490,143 @@
 </head>
 <body>
     <div id="loadingScreen">
+
         <div class="spinner"></div>
+
         <div class="welcome-text" id="loadingMessage">Karibu kwenye ICT Academy!</div>
+
         <i class="fas fa-laptop moving-icons" style="top: 20%; left: 10%;"></i>
+
         <i class="fas fa-code moving-icons" style="top: 40%; left: 30%; animation-delay: 2s;"></i>
+
         <i class="fas fa-server moving-icons" style="top: 60%; left: 50%; animation-delay: 4s;"></i>
+
     </div>
+
+
 
     <div class="moving-header">
+
         <div class="rain-background" id="headerRain"></div>
-        <div class="group-name">ICT ACADEMY GROUP</div>
+
+        <div class="group-name">ICT Academy Group</div>
+
         <div class="online-bar" id="onlineBar"></div>
+
     </div>
 
+
+
     <div class="container" id="mainContainer" style="display: none;">
+
         <div id="announcementBar" class="announcement-bar" style="display: none;">
+
             <i class="fas fa-bullhorn"></i>
+
             <span id="announcementText"></span>
+
         </div>
+
+
 
         <div id="lockedMessage" class="locked-message">
+
             <h3>Mfumo Umesimamishwa</h3>
+
             <p>Mfumo umefungwa kwa sasa upo katika maboresho zaidi. Tafadhali wasiliana na David Malosha kwa namba ya simu 0623715858 (WhatsApp) upate maelezo zaidi.</p>
-            <button class="admin-login-btn" onclick="document.getElementById('adminLoginPopup').style.display = 'flex'">karibu sana </button>
-            <button class="admin-login-btn" onclick="logoutUser()" style="background: var(--secondary);">RUDI NYUMA 🚀</button>
+
+            <button class="admin-login-btn" onclick="document.getElementById('adminLoginPopup').style.display = 'flex'">Admin Login</button>
+
+            <button class="admin-login-btn" onclick="logoutUser()" style="background: var(--secondary);">Toka</button>
+
         </div>
 
+
+
         <div id="content">
+
             <div class="tabs">
+
                 <div class="tab active" data-tab="registration"><i class="fas fa-user-plus"></i> Jisajili</div>
+
                 <div class="tab" data-tab="members"><i class="fas fa-users"></i> Wanachama</div>
+
                 <div class="tab" data-tab="leaders"><i class="fas fa-crown"></i> Viongozi</div>
+
                 <div class="tab" data-tab="admin" id="adminTab"><i class="fas fa-user-shield"></i> Admin</div>
+
                 <div class="tab" data-tab="notifications"><i class="fas fa-bell"></i> Taarifa</div>
+
                 <div class="tab" data-tab="resources"><i class="fas fa-book"></i> Rasilimali</div>
+
             </div>
-
             <section class="tab-content active" id="registration">
+
                 <div class="card">
+
                     <h2 class="section-title"><i class="fas fa-user-plus"></i> Usajili</h2>
+
                     <form id="registrationForm" style="display: none;">
+
                         <div class="form-grid">
+
                             <div class="form-group">
+
                                 <label for="fullName">Jina Kamili</label>
+
                                 <input type="text" id="fullName" class="form-control" placeholder="Andika jina" required>
+
                             </div>
+
                             <div class="form-group">
+
                                 <label for="phone">Namba ya Simu</label>
+
                                 <input type="tel" id="phone" class="form-control" placeholder="0712345678" required>
+
                             </div>
+
                             <div class="form-group">
+
                                 <label for="region">Mkoa</label>
+
                                 <input type="text" id="region" class="form-control" placeholder="Andika mkoa" required>
+
                             </div>
+
                             <div class="form-group">
-    <label for="phone">Namba ya Simu</label>
-    <input type="tel" id="phone" class="form-control" placeholder="0712345678" required>
-</div>
 
-<div class="form-group">
-    <label for="region">Mkoa</label>
-    <input type="text" id="region" class="form-control" placeholder="Andika mkoa" required>
-<div class="form-group">
-    <label for="phone">Namba ya Simu</label>
-    <input type="tel" id="phone" class="form-control" placeholder="0712345678" required>
-</div>
+                                <label for="skills">Ujuzi</label>
 
-<div class="form-group">
-    <label for="region">Mkoa</label>
-    <input type="text" id="region" class="form-control" placeholder="Andika mkoa" required>
-</div>
+                                <select id="skills" class="form-control" required>
 
-<div class="form-group">
-    <label for="skills">Ujuzi</label>
-    <select id="skills" class="form-control" required>
-        <option value="">Chagua</option>
-        <option value="Programming (HTML, CSS, JavaScript, Python, n.k.)">Programming (HTML, CSS, JavaScript, Python, n.k.)</option>
-        <option value="Networking">Networking</option>
-        <option value="Cybersecurity">Cybersecurity</option>
-        <option value="Software & Hardware Troubleshooting">Software & Hardware Troubleshooting</option>
-        <option value="Database management">Database management</option>
-        <option value="AI and emerging technology">AI and emerging technology</option>
-        <option value="Learner level">Learner level</option>
-        <option value="Graphics design">Graphics design</option>
-    </select>
-</div>
+                                    <option value="">Chagua</option>
 
-<button type="submit" class="btn"><i class="fas fa-paper-plane"></i> Jisajili</button>
+                                    <option value="Learner Level">Learner Level</option>
 
-<button class="btn" id="showFormBtn"><i class="fas fa-user-plus"></i> Jisajili</button>
-<button type="submit" class="btn"><i class="fas fa-paper-plane"></i> Jisajili</button>
+                                    <option value="Middle Stage Level">Middle Stage Level</option>
 
-<button class="btn" id="showFormBtn"><i class="fas fa-user-plus"></i> Jisajili</button>
+                                    <option value="Expert Level">Expert Level</option>
+
+                                    <option value="Ultra Expert Level">Ultra Expert Level</option>
+
+                                </select>
+
+                            </div>
+
+                        </div>
+
+                        <button type="submit" class="btn"><i class="fas fa-paper-plane"></i> Jisajili</button>
+
+                    </form>
+
+                    <button class="btn" id="showFormBtn"><i class="fas fa-user-plus"></i> Jisajili</button>
+
                 </div>
+
             </section>
 
-            <section class="tab-content" id="members">
-                <div class="card">
-                    <h2 class="section-title"><i class="fas fa-users"></i> Wanachama</h2>
-                    <table class="members-table">
-                        <thead>
-                            <tr>
-                                <th>Jina</th>
-                                <th>Simu</th>
-                                <th>Mkoa</th>
-                                <th>Ujuzi</th>
-                            </tr>
-                        </thead>
-                        <tbody id="membersList"></tbody>
-                    </table>
-                </div>
-            </section>
+            
 
             <section class="tab-content" id="leaders">
                 <div class="card">
