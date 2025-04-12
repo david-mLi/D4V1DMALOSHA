@@ -1,0 +1,1875 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ICT Academy</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        :root {
+            --primary: #00C4CC;
+            --secondary: #FF6F61;
+            --accent: #FFD54F;
+            --dark: #2D3748;
+            --light: #F7FAFC;
+            --shadow: rgba(0, 0, 0, 0.15);
+        }
+
+        body {
+            background: linear-gradient(135deg, #E6FFFA, #B2F5EA);
+            background-size: 200% 200%;
+            animation: gradientShift 15s ease infinite;
+            color: var(--dark);
+            min-height: 100vh;
+            font-size: 14px;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        #loadingScreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(45, 55, 72, 0.95);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+
+        .rain {
+            position: absolute;
+            width: 2px;
+            height: 20px;
+            background: var(--accent);
+            opacity: 0.8;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(-100vh); }
+            100% { transform: translateY(100vh); }
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid var(--primary);
+            border-top: 5px solid var(--secondary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .welcome-text {
+            margin-top: 20px;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--accent);
+            text-shadow: 1px 1px 3px var(--shadow);
+            text-align: center;
+        }
+
+        .moving-icons {
+            position: absolute;
+            font-size: 2rem;
+            color: var(--primary);
+            animation: moveIcons 10s linear infinite;
+        }
+
+        @keyframes moveIcons {
+            0% { transform: translateX(-100vw); }
+            100% { transform: translateX(100vw); }
+        }
+
+        .moving-header {
+            padding: 20px;
+            text-align: center;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 15px var(--shadow);
+        }
+
+        .rain-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .group-name {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--light);
+            position: relative;
+            z-index: 1;
+        }
+
+        .online-bar {
+            font-size: 0.8rem;
+            margin-top: 10px;
+            color: var(--light);
+            position: relative;
+            z-index: 1;
+        }
+
+        .container {
+            padding: 15px;
+        }
+
+        .announcement-bar {
+            background: linear-gradient(45deg, #FF6F61, #00C4CC, #FFD54F);
+            background-size: 300% 300%;
+            animation: announcementShift 10s ease infinite;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 10px;
+            color: var(--dark);
+            font-size: 1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 10px var(--shadow);
+            position: relative;
+            z-index: 1;
+        }
+
+        @keyframes announcementShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .announcement-bar i {
+            font-size: 1.2rem;
+            color: var(--light);
+            text-shadow: 1px 1px 3px var(--shadow);
+        }
+
+        .tabs {
+            display: flex;
+            justify-content: space-around;
+            background: var(--light);
+            border-radius: 25px;
+            padding: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px var(--shadow);
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        .tab {
+            padding: 12px 20px;
+            text-align: center;
+            cursor: pointer;
+            border-radius: 20px;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--dark);
+            background: var(--light);
+            transition: all 0.3s ease;
+            flex: 1;
+            min-width: 120px;
+            margin: 0 5px;
+        }
+
+        .tab:hover {
+            background: var(--primary);
+            color: var(--light);
+            transform: scale(1.05);
+        }
+
+        .tab.active {
+            background: var(--primary);
+            color: var(--light);
+            box-shadow: 0 3px 10px rgba(0, 196, 204, 0.5);
+        }
+
+        .tab.disabled {
+            pointer-events: none;
+            opacity: 0.5;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .card {
+            background: var(--light);
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 6px 15px var(--shadow);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--primary);
+            border-bottom: 2px solid var(--secondary);
+            display: inline-block;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 10px;
+        }
+
+        .form-group label {
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-bottom: 5px;
+            display: block;
+            color: var(--dark);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 8px;
+            border-radius: 8px;
+            border: 1px solid var(--primary);
+            background: var(--light);
+            color: var(--dark);
+            font-size: 0.9rem;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--secondary);
+            box-shadow: 0 0 5px rgba(255, 111, 97, 0.5);
+        }
+
+        .btn {
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            color: var(--light);
+            border: none;
+            padding: 10px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: scale(1.03);
+            box-shadow: 0 5px 15px rgba(0, 196, 204, 0.5);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .members-table, .understanding-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.8rem;
+        }
+
+        .members-table th, .members-table td, .understanding-table th, .understanding-table td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid rgba(45, 55, 72, 0.2);
+        }
+
+        .members-table th, .understanding-table th {
+            background: var(--primary);
+            color: var(--light);
+            font-weight: 600;
+        }
+
+        .leaders-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+
+        .leader-card {
+            background: rgba(45, 55, 72, 0.1);
+            border-radius: 15px;
+            padding: 15px;
+            text-align: center;
+            color: var(--dark);
+        }
+
+        .admin-panel {
+            display: none;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .admin-panel.active {
+            display: grid;
+        }
+
+        .admin-section {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .comments-section {
+            margin-top: 15px;
+        }
+
+        .comment {
+            background: rgba(45, 55, 72, 0.1);
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            font-size: 0.8rem;
+            color: var(--dark);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .comment .name-left {
+            color: #1E90FF;
+            font-weight: 600;
+        }
+
+        .comment .name-right {
+            color: #32CD32;
+            font-weight: 600;
+        }
+
+        .comment .ticks {
+            font-size: 0.9rem;
+        }
+
+        .resources-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            padding: 10px 0;
+        }
+
+        .resource-item {
+            background: rgba(45, 55, 72, 0.05);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .resource-item:hover {
+            background: rgba(0, 196, 204, 0.1);
+            transform: scale(1.02);
+        }
+
+        .popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .popup-content {
+            background: var(--light);
+            padding: 30px;
+            border-radius: 20px;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 15px 40px var(--shadow);
+            color: var(--dark);
+            animation: popupFadeIn 0.5s ease;
+        }
+
+        @keyframes popupFadeIn {
+            0% { opacity: 0; transform: scale(0.8); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        .popup-content h3 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: var(--primary);
+        }
+
+        .popup-content p {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+        }
+
+        .popup-btn {
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            color: var(--light);
+            padding: 12px 25px;
+            border-radius: 25px;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .popup-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 20px rgba(0, 196, 204, 0.5);
+        }
+
+        .locked-message {
+            background: var(--light);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            color: var(--dark);
+            font-size: 1rem;
+            margin: 15px;
+            box-shadow: 0 4px 10px var(--shadow);
+            display: none;
+        }
+
+        .admin-login-btn {
+            background: var(--primary);
+            color: var(--light);
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            margin-top: 15px;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+
+        .admin-login-btn:hover {
+            background: var(--secondary);
+            transform: scale(1.05);
+        }
+
+        footer {
+            text-align: center;
+            padding: 15px;
+            font-size: 0.8rem;
+            background: var(--dark);
+            margin-top: 15px;
+            color: var(--light);
+        }
+
+        .powered-by {
+            text-align: center;
+            padding: 10px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            animation: colorChange 6s infinite;
+        }
+
+        @keyframes colorChange {
+            0% { color: var(--primary); }
+            50% { color: var(--secondary); }
+            100% { color: var(--accent); }
+        }
+
+        #registrationForm.active {
+            display: block;
+            max-height: 70vh;
+            overflow-y: auto;
+            padding-bottom: 20px;
+        }
+
+        .learned-content-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            padding: 10px 0;
+        }
+
+        .learned-content-item {
+            background: rgba(45, 55, 72, 0.05);
+            padding: 15px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .learned-content-item:hover {
+            background: rgba(0, 196, 204, 0.1);
+            transform: scale(1.02);
+        }
+
+        .learned-content-item span.number {
+            background: var(--primary);
+            color: var(--light);
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        .learned-content-item p {
+            flex: 1;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <div id="loadingScreen">
+        <div class="spinner"></div>
+        <div class="welcome-text" id="loadingMessage">Karibu kwenye ICT Academy!</div>
+        <i class="fas fa-laptop moving-icons" style="top: 20%; left: 10%;"></i>
+        <i class="fas fa-code moving-icons" style="top: 40%; left: 30%; animation-delay: 2s;"></i>
+        <i class="fas fa-server moving-icons" style="top: 60%; left: 50%; animation-delay: 4s;"></i>
+    </div>
+
+    <div class="moving-header">
+        <div class="rain-background" id="headerRain"></div>
+        <div class="group-name">ICT AND IT ACADEMY</div>
+        <div class="online-bar" id="onlineBar"></div>
+    </div>
+
+    <div class="container" id="mainContainer" style="display: none;">
+        <div id="announcementBar" class="announcement-bar" style="display: none;">
+            <i class="fas fa-bullhorn"></i>
+            <span id="announcementText"></span>
+        </div>
+
+        <div id="lockedMessage" class="locked-message">
+            <h3>Mfumo Umesimamishwa</h3>
+            <p>Mfumo umefungwa kwa sasa upo katika maboresho zaidi. Tafadhali wasiliana na David Malosha kwa namba ya simu 0623715858 (WhatsApp) upate maelezo zaidi.</p>
+            <button class="admin-login-btn" onclick="document.getElementById('adminLoginPopup').style.display = 'flex'">Admin Login</button>
+            <button class="admin-login-btn" onclick="logoutUser()" style="background: var(--secondary);">Toka</button>
+        </div>
+
+        <div id="content">
+            <div class="tabs">
+                <div class="tab active" data-tab="registration"><i class="fas fa-user-plus"></i> Jisajiri</div>
+                <div class="tab" data-tab="members"><i class="fas fa-users"></i> member </div>
+                <div class="tab" data-tab="leaders"><i class="fas fa-crown"></i> Viongozi</div>
+                <div class="tab" data-tab="admin" id="adminTab"><i class="fas fa-user-shield"></i> Admin</div>
+                <div class="tab" data-tab="notifications"><i class="fas fa-bell"></i> Taarifa</div>
+                <div class="tab" data-tab="resources"><i class="fas fa-book"></i> condition</div>
+                <div class="tab" data-tab="learned"><i class="fas fa-graduation-cap"></i> course</div>
+            </div>
+
+            <section class="tab-content active" id="registration">
+                <div class="card">
+                    <h2 class="section-title"><i class="fas fa-user-plus"></i> Usajili</h2>
+                    <form id="registrationForm" style="display: none;">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="fullName">Jina Kamili</label>
+                                <input type="text" id="fullName" class="form-control" placeholder="Andika jina" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Namba ya Simu</label>
+                                <input type="tel" id="phone" class="form-control" placeholder="0712345678" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="region">Mkoa</label>
+                                <input type="text" id="region" class="form-control" placeholder="Andika mkoa" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="skillsSelect">Chagua Ujuzi (Hiari)</label>
+                                <select id="skillsSelect" class="form-control" multiple>
+                                    <option value="Learner Level">Learner Level</option>
+                                    <option value="Programming (HTML, CSS, JavaScript, Python, n.k.)">Programming (HTML, CSS, JavaScript, Python, n.k.)</option>
+                                    <option value="Graphic Design">Graphic Design</option>
+                                    <option value="Networking">Networking</option>
+                                    <option value="Cybersecurity">Cybersecurity</option>
+                                    <option value="Software & Hardware Troubleshooting">Software & Hardware Troubleshooting</option>
+                                    <option value="Database Management">Database Management</option>
+                                    <option value="Emerging Technologies">Emerging Technologies</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="skills">Ujuzi (Andika au Chagua)</label>
+                                <textarea id="skills" class="form-control" placeholder="Andika ujuzi wako au uchague hapo juu" required></textarea>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn"><i class="fas fa-paper-plane"></i> Jisajiri</button>
+                    </form>
+                    <button class="btn" id="showFormBtn"><i class="fas fa-user-plus"></i> Jisajiri</button>
+                </div>
+            </section>
+
+            <section class="tab-content" id="members">
+    <div class="card">
+                    <h2 class="section-title"><i class="fas fa-users"></i> member </h2>
+                    <table class="members-table">
+                        <thead>
+                            <tr>
+                                <th>Jina</th>
+                                <th>Simu</th>
+                                <th>Mkoa</th>
+                                <th>Ujuzi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="membersList"></tbody>
+                    </table>
+                    <h2 class="section-title" style="margin-top: 20px;"><i class="fas fa-check-circle"></i> Kuthibitisha Kuelewa</h2>
+                    <table class="understanding-table">
+                        <thead>
+                            <tr>
+                                <th>Jina</th>
+                                <th>Kipengele</th>
+                                <th>Nimeelewa</th>
+                                <th>Sijaelewa</th>
+                            </tr>
+                        </thead>
+                        <tbody id="understandingList"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section class="tab-content" id="leaders">
+                <div class="card">
+                    <h2 class="section-title"><i class="fas fa-crown"></i> Viongozi</h2>
+                    <div class="leaders-container" id="leadersList"></div>
+                </div>
+            </section>
+
+            <section class="tab-content" id="admin">
+                <div class="card">
+                    <h2 class="section-title"><i class="fas fa-user-shield"></i> Admin Panel</h2>
+                    <div class="admin-panel" id="adminPanel">
+                        <div class="admin-section">
+                            <label>Udhibiti wa Mfumo</label>
+                            <button class="btn" id="lockSystemBtn"><i class="fas fa-lock"></i> Funga Mfumo</button>
+                            <button class="btn" id="unlockSystemBtn"><i class="fas fa-unlock"></i> Fungua Mfumo</button>
+                            <button class="btn" id="logoutAdminBtn" style="display: none;"><i class="fas fa-sign-out-alt"></i> Toka Admin</button>
+                        </div>
+
+                        <div class="admin-section">
+                            <label>Zuia VPN</label>
+                            <button class="btn" id="enableVpnBlockBtn"><i class="fas fa-ban"></i> Zuia VPN</button>
+                            <button class="btn" id="disableVpnBlockBtn"><i class="fas fa-check"></i> Ruhusu VPN</button>
+                        </div>
+
+                        <div class="admin-section">
+                            <label>Muda wa Kukaa (Dakika)</label>
+                            <input type="number" id="sessionTimeout" class="form-control" min="1" placeholder="Dakika">
+                            <button class="btn" id="setTimeoutBtn"><i class="fas fa-clock"></i> Weka Muda</button>
+                            <button class="btn" id="clearTimeoutBtn"><i class="fas fa-times"></i> Ondoa Muda</button>
+                        </div>
+
+                        <div class="admin-section">
+                            <label>Muda wa Kusubiri Baada ya Muda Kuisha (Dakika)</label>
+                            <input type="number" id="waitTime" class="form-control" min="2" max="10" placeholder="2-10 Dakika">
+                            <button class="btn" id="setWaitTimeBtn"><i class="fas fa-hourglass"></i> Weka Muda wa Kusubiri</button>
+                        </div>
+
+                        <div class="admin-section">
+                            <label>Ongeza Kiongozi</label>
+                            <input type="text" id="leaderName" class="form-control" placeholder="Jina">
+                            <input type="text" id="leaderRole" class="form-control" placeholder="Wadhifa">
+                            <button class="btn" id="addLeaderBtn"><i class="fas fa-plus"></i> Ongeza</button>
+                        </div>
+
+                        <div class="admin-section">
+                            <label>Futa Kiongozi</label>
+                            <select id="deleteLeader" class="form-control"></select>
+                            <button class="btn" id="deleteLeaderBtn"><i class="fas fa-trash"></i> Futa</button>
+                        </div>
+
+                        <div class="admin-section">
+                            <label>Tangazo</label>
+                            <textarea id="announcement" class="form-control" placeholder="Andika tangazo"></textarea>
+                            <button class="btn" id="postAnnouncementBtn"><i class="fas fa-bullhorn"></i> Chapisha</button>
+                            <button class="btn" id="deleteAnnouncementBtn"><i class="fas fa-trash"></i> Ondoa</button>
+                        </div>
+
+                        <div class="admin-section">
+                            <label>Futa Mmember </label>
+                            <select id="deleteMember" class="form-control"></select>
+                            <button class="btn" id="deleteMemberBtn"><i class="fas fa-trash"></i> Futa</button>
+                        </div>
+
+                        <div class="admin-section">
+                            <label>Wageni</label>
+                            <ul id="visitorList"></ul>
+                            <button class="btn" id="clearVisitorsBtn"><i class="fas fa-trash"></i> Futa Wageni</button>
+                        </div>
+
+                        <div class="admin-section">
+                            <label>Ripoti ya member </label>
+                            <button class="btn" id="generateReportBtn"><i class="fas fa-file-alt"></i> Tengeneza Ripoti</button>
+                        </div>
+
+                        <div class="admin-section">
+                            <label>Orodha ya Maoni</label>
+                            <button class="btn" id="exportCommentsBtn"><i class="fas fa-download"></i> Pakua Maoni</button>
+                        </div>
+
+                        <div class="admin-section">
+                            <label>Hali ya Mfumo</label>
+                            <button class="btn" id="systemStatusBtn"><i class="fas fa-info-circle"></i> Angalia Hali</button>
+                        </div>
+
+                        <div class="admin-section">
+                            <label>Zuia IP</label>
+                            <input type="text" id="blockIp" class="form-control" placeholder="Ingiza IP">
+                            <button class="btn" id="blockIpBtn"><i class="fas fa-ban"></i> Zuia</button>
+                        </div>
+
+                        <div class="admin-section">
+                            <label>Ongeza Maudhui Yaliyojifunzwa</label>
+                            <textarea id="learnedContent" class="form-control" placeholder="Andika maudhui"></textarea>
+                            <button class="btn" id="addLearnedContentBtn"><i class="fas fa-plus"></i> Ongeza</button>
+                        </div>
+
+                        <div class="admin-section">
+                            <label>Hariri/Futa Maudhui</label>
+                            <select id="editLearnedContent" class="form-control"></select>
+                            <button class="btn" id="editLearnedContentBtn"><i class="fas fa-edit"></i> Hariri</button>
+                            <button class="btn" id="deleteLearnedContentBtn"><i class="fas fa-trash"></i> Futa</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="tab-content" id="notifications">
+                <div class="card">
+                    <h2 class="section-title"><i class="fas fa-bell"></i> Taarifa</h2>
+                    <div id="notificationsList"></div>
+                </div>
+            </section>
+
+            <section class="tab-content" id="resources">
+                <div class="card">
+                    <h2 class="section-title"><i class="fas fa-book"></i> Hali ya Kujifunza</h2>
+                    <table class="understanding-table">
+                        <thead>
+                            <tr>
+                                <th>Jina</th>
+                                <th>Kipengele</th>
+                                <th>Hali</th>
+                            </tr>
+                        </thead>
+                        <tbody id="learningStatusList"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section class="tab-content" id="learned">
+                <div class="card">
+                    <h2 class="section-title"><i class="fas fa-graduation-cap"></i> Maudhui Yaliyojifunzwa</h2>
+                    <div class="learned-content-list" id="learnedContentList">
+                        <p>Hakuna maudhui yaliyojifunzwa bado.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="comments-section" id="commentsSection">
+                <div class="card">
+                    <h2 class="section-title"><i class="fas fa-comments"></i> Maoni</h2>
+                    <div class="form-group">
+                        <textarea id="commentInput" class="form-control" placeholder="Andika maoni"></textarea>
+                    </div>
+                    <button class="btn" id="addCommentBtn"><i class="fas fa-comment"></i> Toa Maoni</button>
+                    <div id="commentsList"></div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2025 ICT Academy. Haki Zote Zimehifadhiwa.</p>
+    </footer>
+    <div class="powered-by">POWERED BY MALOSHA </div>
+
+    <div class="popup" id="adminLoginPopup">
+        <div class="popup-content">
+            <h3><i class="fas fa-user-shield"></i> Ingia kama Admin</h3>
+            <input type="password" id="adminPassword" class="form-control" placeholder="Password">
+            <div style="margin-top: 20px;">
+                <button class="popup-btn" onclick="loginAdmin()"><i class="fas fa-sign-in-alt"></i> Ingia</button>
+                <button class="popup-btn" onclick="closePopup('adminLoginPopup')" style="background: var(--secondary);"><i class="fas fa-times"></i> Rudi</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="popup" id="successPopup">
+        <div class="popup-content">
+            <h3><i class="fas fa-check-circle"></i> Hongera!</h3>
+            <p id="successMessage"></p>
+            <button class="popup-btn" onclick="closePopup('successPopup')"><i class="fas fa-times"></i> Funga</button>
+        </div>
+    </div>
+
+    <div class="popup" id="vpnPopup">
+        <div class="popup-content">
+            <h3><i class="fas fa-ban"></i> Haukubaliwi</h3>
+            <p>Malosha mmiliki wa mfumo huu amezuia watu wanaotumia VPN kuingia kwenye mfumo wake.</p>
+            <button class="popup-btn" onclick="closePopup('vpnPopup')"><i class="fas fa-times"></i> Funga</button>
+        </div>
+    </div>
+
+    <div class="popup" id="editLearnedContentPopup">
+        <div class="popup-content">
+            <h3><i class="fas fa-edit"></i> Hariri Maudhui</h3>
+            <textarea id="editLearnedContentText" class="form-control" placeholder="Andika maudhui"></textarea>
+            <div style="margin-top: 20px;">
+                <button class="popup-btn" id="saveEditedContentBtn"><i class="fas fa-save"></i> Hifadhi</button>
+                <button class="popup-btn" onclick="closePopup('editLearnedContentPopup')" style="background: var(--secondary);"><i class="fas fa-times"></i> Rudi</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
+
+    <script>
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyC013_rc0iUi0QLlXAN4ZjlXeCdZkkU2bg",
+            authDomain: "ict-and-it-academy.firebaseapp.com",
+            databaseURL: "https://ict-and-it-academy-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "ict-and-it-academy",
+            storageBucket: "ict-and-it-academy.appspot.com",
+            messagingSenderId: "672036717802",
+            appId: "1:672036717802:web:8d2bd3f4f07408efb40393",
+            measurementId: "G-N93RJQTJ0J"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+        const storage = firebase.storage();
+
+        const membersRef = database.ref('members');
+        const leadersRef = database.ref('leaders');
+        const visitorsRef = database.ref('visitors');
+        const commentsRef = database.ref('comments');
+        const visitorscnRef = database.ref('visitorCountToday');
+        const uniqueVisitorsRef = database.ref('uniqueVisitors');
+        const announcementRef = database.ref('announcement');
+        const systemLockedRef = database.ref('isSystemLocked');
+        const vpnBlockedRef = database.ref('isVpnBlocked');
+        const sessionTimeoutRef = database.ref('sessionTimeout');
+        const waitTimeRef = database.ref('waitTime');
+        const blockedIpsRef = database.ref('blockedIps');
+        const notificationsRef = database.ref('notifications');
+        const learnedContentRef = database.ref('learnedContent');
+        const understandingRef = database.ref('understanding');
+
+        let members = [];
+        let leaders = [];
+        let visitors = [];
+        let comments = [];
+        let visitorCountToday = 0;
+        let uniqueVisitors = {};
+        let announcement = '';
+        let isSystemLocked = false;
+        let isVpnBlocked = false;
+        let sessionTimeout = 0;
+        let waitTime = 2;
+        let isAdminLoggedIn = false;
+        let timeoutId = null;
+        let blockedIps = [];
+        let notifications = [];
+        let lastTimeoutTime = null;
+        let learnedContent = [];
+        let understanding = {};
+
+        const months = ["Januari", "Februari", "Machi", "Aprili", "Mei", "Juni", "Julai", "Agosti", "Septemba", "Oktoba", "Novemba", "Desemba"];
+        const date = new Date();
+        document.getElementById('onlineBar').textContent = `Sasa tupo ${months[date.getMonth()]} | Waliotembelea mfumo leo = ${visitorCountToday}`;
+
+        function updateUI() {
+            updateMembersTable();
+            updateLeaders();
+            updateDeleteMemberSelect();
+            updateDeleteLeaderSelect();
+            updateVisitorLog();
+            updateComments();
+            updateAnnouncement();
+            updateSystemState();
+            updateNotifications();
+            updateLearnedContent();
+            updateUnderstanding();
+            updateLearningStatus();
+            document.getElementById('onlineBar').textContent = `Sasa tupo ${months[date.getMonth()]} | Waliotembelea mfumo leo = ${visitorCountToday}`;
+        }
+
+        function updateSystemState() {
+            const content = document.getElementById('content');
+            const lockedMessage = document.getElementById('lockedMessage');
+            const commentsSection = document.getElementById('commentsSection');
+            const registrationForm = document.getElementById('registrationForm');
+            const showFormBtn = document.getElementById('showFormBtn');
+            const addCommentBtn = document.getElementById('addCommentBtn');
+            const tabs = document.querySelectorAll('.tab');
+            const adminTab = document.getElementById('adminTab');
+            const adminPanel = document.getElementById('adminPanel');
+            const logoutBtn = document.getElementById('logoutAdminBtn');
+
+            if (isSystemLocked && !isAdminLoggedIn) {
+                content.style.display = 'none';
+                lockedMessage.style.display = 'block';
+                commentsSection.style.display = 'none';
+                registrationForm.disabled = true;
+                showFormBtn.disabled = true;
+                addCommentBtn.disabled = true;
+                tabs.forEach(tab => tab.classList.add('disabled'));
+                adminTab.classList.remove('disabled');
+            } else if (isSystemLocked && isAdminLoggedIn) {
+                content.style.display = 'block';
+                lockedMessage.style.display = 'none';
+                commentsSection.style.display = 'none';
+                registrationForm.disabled = true;
+                showFormBtn.disabled = true;
+                addCommentBtn.disabled = true;
+                tabs.forEach(tab => {
+                    if (tab.getAttribute('data-tab') !== 'admin') tab.classList.add('disabled');
+                    else tab.classList.remove('disabled');
+                });
+                adminTab.classList.add('active');
+                document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+                document.getElementById('admin').classList.add('active');
+                adminPanel.classList.add('active');
+                logoutBtn.style.display = 'block';
+            } else {
+                content.style.display = 'block';
+                lockedMessage.style.display = 'none';
+                commentsSection.style.display = 'block';
+                registrationForm.disabled = false;
+                showFormBtn.disabled = false;
+                addCommentBtn.disabled = false;
+                tabs.forEach(tab => tab.classList.remove('disabled'));
+                logoutBtn.style.display = isAdminLoggedIn ? 'block' : 'none';
+            }
+        }
+
+        document.getElementById('lockSystemBtn').addEventListener('click', () => {
+            if (!isAdminLoggedIn) {
+                alert('Lazima uingie kama Admin kwanza!');
+                document.getElementById('adminLoginPopup').style.display = 'flex';
+                return;
+            }
+            isSystemLocked = true;
+            systemLockedRef.set(isSystemLocked);
+            updateSystemState();
+            alert('Mfumo Umesimamishwa!');
+        });
+
+        document.getElementById('unlockSystemBtn').addEventListener('click', () => {
+            if (!isAdminLoggedIn) {
+                alert('Lazima uingie kama Admin kwanza!');
+                document.getElementById('adminLoginPopup').style.display = 'flex';
+                return;
+            }
+            isSystemLocked = false;
+            systemLockedRef.set(isSystemLocked);
+            updateSystemState();
+            alert('Mfumo Umefunguliwa!');
+        });
+
+        function canAccessSystem() {
+            if (isSystemLocked) return false;
+            if (!lastTimeoutTime) return true;
+            const now = new Date().getTime();
+            const timeSinceTimeout = (now - lastTimeoutTime) / 1000 / 60;
+            return timeSinceTimeout >= waitTime;
+        }
+
+        function logoutUser() {
+            window.location.reload();
+        }
+
+        document.getElementById('logoutAdminBtn').addEventListener('click', () => {
+            isAdminLoggedIn = false;
+            document.getElementById('adminPanel').classList.remove('active');
+            updateSystemState();
+            alert('Umetoka kama Admin!');
+        });
+
+        function setSessionTimeout(minutes) {
+           if (timeoutId) clearTimeout(timeoutId);
+            console.log(`Setting timeout for ${minutes} minutes`);
+            timeoutId = setTimeout(() => {
+                console.log('Timeout triggered');
+                if (!isAdminLoggedIn && canAccessSystem()) {
+                    lastTimeoutTime = new Date().getTime();
+                    document.getElementById('mainContainer').style.display = 'none';
+                    document.getElementById('loadingScreen').style.display = 'flex';
+                    document.getElementById('loadingMessage').textContent = `Muda wako umeisha. Subiri dakika ${waitTime} uingie tena.`;
+                    console.log(`Waiting for ${waitTime} minutes`);
+                    setTimeout(() => {
+                        if (canAccessSystem()) {
+                            document.getElementById('loadingScreen').style.display = 'none';
+                            document.getElementById('mainContainer').style.display = 'block';
+                            document.getElementById('loadingMessage').textContent = 'Karibu kwenye ICT Academy!';
+                            console.log('System access restored');
+                        }
+                    }, waitTime * 60 * 1000);
+                }
+            }, minutes * 60 * 1000);
+        }
+
+        document.getElementById('setTimeoutBtn').addEventListener('click', () => {
+            if (!isAdminLoggedIn) {
+                alert('Lazima uingie kama Admin kwanza!');
+                document.getElementById('adminLoginPopup').style.display = 'flex';
+                return;
+            }
+            const minutes = parseInt(document.getElementById('sessionTimeout').value);
+            if (minutes > 0) {
+                sessionTimeout = minutes;
+                sessionTimeoutRef.set(sessionTimeout);
+                setSessionTimeout(minutes);
+                alert(`Muda wa dakika ${minutes} umewekwa!`);
+            } else {
+                alert('Tafadhali ingiza dakika zaidi ya 0!');
+            }
+        });
+
+        document.getElementById('clearTimeoutBtn').addEventListener('click', () => {
+            if (!isAdminLoggedIn) {
+                alert('Lazima uingie kama Admin kwanza!');
+                document.getElementById('adminLoginPopup').style.display = 'flex';
+                return;
+            }
+            if (timeoutId) clearTimeout(timeoutId);
+            sessionTimeout = 0;
+            sessionTimeoutRef.set(sessionTimeout);
+            lastTimeoutTime = null;
+            alert('Muda umeondolewa!');
+        });
+
+        document.getElementById('setWaitTimeBtn').addEventListener('click', () => {
+            if (!isAdminLoggedIn) {
+                alert('Lazima uingie kama Admin kwanza!');
+                document.getElementById('adminLoginPopup').style.display = 'flex';
+                return;
+            }
+            const minutes = parseInt(document.getElementById('waitTime').value);
+            if (minutes >= 2 && minutes <= 10) {
+                waitTime = minutes;
+                waitTimeRef.set(waitTime);
+                alert(`Muda wa kusubiri umewekwa kuwa dakika ${waitTime}!`);
+            } else {
+                alert('Tafadhali weka dakika kati ya 2 na 10!');
+            }
+        });
+
+        document.getElementById('enableVpnBlockBtn').addEventListener('click', () => {
+            if (!isAdminLoggedIn) {
+                alert('Lazima uingie kama Admin kwanza!');
+                document.getElementById('adminLoginPopup').style.display = 'flex';
+                return;
+            }
+            isVpnBlocked = true;
+            vpnBlockedRef.set(isVpnBlocked);
+            alert('VPN Imezuiwa!');
+            logVisitor();
+        });
+
+        document.getElementById('disableVpnBlockBtn').addEventListener('click', () => {
+            if (!isAdminLoggedIn) {
+                alert('Lazima uingie kama Admin kwanza!');
+                document.getElementById('adminLoginPopup').style.display = 'flex';
+                return;
+            }
+            isVpnBlocked = false;
+            vpnBlockedRef.set(isVpnBlocked);
+            alert('VPN Imeruhusiwa!');
+        });
+
+        function updateAnnouncement() {
+            const announcementBar = document.getElementById('announcementBar');
+            const announcementText = document.getElementById('announcementText');
+            if (announcement) {
+                announcementText.textContent = announcement;
+                announcementBar.style.display = 'flex';
+            } else {
+                announcementBar.style.display = 'none';
+            }
+        }
+
+        document.getElementById('postAnnouncementBtn').addEventListener('click', () => {
+            if (!isAdminLoggedIn) {
+                alert('Lazima uingie kama Admin kwanza!');
+                document.getElementById('adminLoginPopup').style.display = 'flex';
+                return;
+            }
+            const newAnnouncement = document.getElementById('announcement').value;
+            if (newAnnouncement) {
+                announcement = newAnnouncement;
+                announcementRef.set(announcement);
+                updateAnnouncement();
+                addNotification(`Tangazo Jipya: ${newAnnouncement}`);
+                document.getElementById('announcement').value = '';
+                document.getElementById('successMessage').textContent = `Tangazo: ${announcement}`;
+                document.getElementById('successPopup').style.display = 'flex';
+            }
+        });
+
+        document.getElementById('deleteAnnouncementBtn').addEventListener('click', () => {
+            if (!isAdminLoggedIn) {
+                alert('Lazima uingie kama Admin kwanza!');
+                document.getElementById('adminLoginPopup').style.display = 'flex';
+                return;
+            }
+            announcement = '';
+            announcementRef.set(announcement);
+            updateAnnouncement();
+            alert('Tangazo Limeondolewa!');
+        });
+
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                if (!canAccessSystem() && !isAdminLoggedIn && tab.getAttribute('data-tab') !== 'admin') {
+                    alert('Muda wako umeisha au mfumo umesimamishwa! Subiri dakika ' + waitTime + ' au ingia kama Admin.');
+                    return;
+                }
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+                tab.classList.add('active');
+                document.getElementById(tab.getAttribute('data-tab')).classList.add('active');
+                if (tab.getAttribute('data-tab') === 'admin' && isAdminLoggedIn) {
+                    document.getElementById('adminPanel').classList.add('active');
+                }
+            });
+        });
+
+        const showFormBtn = document.getElementById('showFormBtn');
+        const registrationForm = document.getElementById('registrationForm');
+        showFormBtn.addEventListener('click', () => {
+            if (!canAccessSystem() && !isAdminLoggedIn) {
+                alert('Muda wako umeisha au mfumo umesimamishwa! Subiri dakika ' + waitTime + ' au ingia kama Admin.');
+                return;
+            }
+            showFormBtn.style.display = 'none';
+            registrationForm.style.display = 'block';
+            registrationForm.classList.add('active');
+            window.scrollTo({ top: registrationForm.offsetTop - 50, behavior: 'smooth' });
+        });
+
+        document.getElementById('skillsSelect').addEventListener('change', () => {
+            const skillsSelect = document.getElementById('skillsSelect');
+            const skillsText = document.getElementById('skills');
+            const selectedSkills = Array.from(skillsSelect.selectedOptions).map(option => option.value);
+            if (selectedSkills.length > 0) {
+                const currentSkills = skillsText.value ? skillsText.value.split(',').map(s => s.trim()) : [];
+                const updatedSkills = [...new Set([...currentSkills, ...selectedSkills])].join(', ');
+                skillsText.value = updatedSkills;
+                skillsSelect.value = '';
+            }
+        });
+
+        registrationForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            if (!canAccessSystem() && !isAdminLoggedIn) {
+                alert('Muda wako umeisha au mfumo umesimamishwa! Subiri dakika ' + waitTime + ' au ingia kama Admin.');
+                return;
+            }
+            const fullName = document.getElementById('fullName').value;
+            const phone = document.getElementById('phone').value;
+            const region = document.getElementById('region').value;
+            const skills = document.getElementById('skills').value;
+
+            const registrationKey = `registered-${phone}`;
+            if (localStorage.getItem(registrationKey)) {
+                alert('Umeshasajili mara moja tu inaruhusiwa na namba hii!');
+                return;
+            }
+
+            if (members.some(member => member.phone === phone)) {
+                alert('Namba ya simu hii tayari imesajiliwa!');
+                return;
+            }
+
+            members.push({ fullName, phone, region, skills });
+            membersRef.set(members);
+            updateMembersTable();
+            updateDeleteMemberSelect();
+
+            localStorage.setItem(registrationKey, 'true');
+            document.getElementById('successMessage').textContent = `Hongera ${fullName}, umefanikiwa kujiunga!`;
+            document.getElementById('successPopup').style.display = 'flex';
+            addNotification(`${fullName} amejiunga na ICT Academy!`);
+
+            registrationForm.reset();
+            registrationForm.style.display = 'none';
+            registrationForm.classList.remove('active');
+            showFormBtn.style.display = 'block';
+        });
+
+        function updateMembersTable() {
+            const tbody = document.getElementById('membersList');
+            tbody.innerHTML = '';
+            members.forEach(member => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${member.fullName}</td>
+                    <td>${member.phone}</td>
+                    <td>${member.region}</td>
+                    <td>${member.skills}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        document.getElementById('adminTab').addEventListener('click', () => {
+            if (!isAdminLoggedIn) {
+                document.getElementById('adminLoginPopup').style.display = 'flex';
+            } else {
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+                document.getElementById('adminTab').classList.add('active');
+                document.getElementById('admin').classList.add('active');
+                document.getElementById('adminPanel').classList.add('active');
+            }
+        });
+
+        function loginAdmin() {
+            const password = document.getElementById('adminPassword').value;
+            if (password === "1340") {
+                isAdminLoggedIn = true;
+                document.getElementById('adminLoginPopup').style.display = 'none';
+                document.getElementById('adminPanel').classList.add('active');
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+                document.getElementById('adminTab').classList.add('active');
+                document.getElementById('admin').classList.add('active');
+                updateSystemState();
+                alert('Umefanikiwa kuingia kama Admin!');
+            } else {
+                alert('Password si sahihi!');
+            }
+            document.getElementById('adminPassword').value = '';
+        }
+
+        document.getElementById('addLeaderBtn').addEventListener('click', () => {
+            if (!isAdminLoggedIn) {
+                alert('Lazima uingie kama Admin kwanza!');
+                document.getElementById('adminLoginPopup').style.display = 'flex';
+                return;
+            }
+            const name = document.getElementById('leaderName').value;
+            const role = document.getElementById('leaderRole').value;
+
+            if (!name || !role) {
+                alert('Tafadhali jaza jina na wadhifa!');
+                return;
+            }
+
+            const leaderKey = `${name}-${role}`;
+            if (localStorage.getItem(`leader-${leaderKey}`)) {
+                alert('Kiongozi huyu tayari amesajiliwa na wadhifa huu mara moja tu inaruhusiwa!');
+                return;
+            }
+
+            if (leaders.some(leader => leader.name === name && leader.role === role)) {
+                alert('Kiongozi huyu tayari amesajiliwa na wadhifa huu!');
+                return;
+            }
+
+            leaders.push({ name, role });
+            leadersRef.set(leaders);
+            updateLeaders();
+            updateDeleteLeaderSelect();
+            localStorage.setItem(`leader-${leaderKey}`, 'true');
+            addNotification(`${name} ameongezwa kama ${role}`);
+            clearLeaderForm();
+        });
+
+        function clearLeaderForm() {
+            document.getElementById('leaderName').value = '';
+            document.getElementById('leaderRole').value = '';
+        }
+
+        function updateLeaders() {
+            const container = document.getElementById('leadersList');
+            container.innerHTML = '';
+            leaders.forEach(leader => {
+                const card = document.createElement('div');
+                card.classList.add('leader-card');
+                card.innerHTML = `
+                    <h3>${leader.name}</h3>
+                    <p>${leader.role}</p>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function updateDeleteLeaderSelect() {
+            const select = document.getElementById('deleteLeader');
+            select.innerHTML = '<option value="">Chagua Kiongozi</option>';
+            leaders.forEach((leader, index) => {
+                const option = document.createElement('option');
+                option.value = index;
+                option.textContent = `${leader.name} - ${leader.role}`;
+                select.appendChild(option);
+            });
+        }
+
+        document.getElementById('deleteLeaderBtn').addEventListener('click', () => {
+            if (!isAdminLoggedIn) {
+                alert('Lazima uingie kama Admin kwanza!');
+                document.getElementById('adminLoginPopup').style.display = 'flex';
+                return;
+            }
+            const index = document.getElementById('deleteLeader').value;
+            if (index !== '') {
+                const leader = leaders[index];
+                const leaderKey = `${leader.name}-${leader.role}`;
+                leaders.splice(index, 1);
+                leadersRef.set(leaders);
+                updateLeaders();
+                updateDeleteLeaderSelect();
+                localStorage.removeItem(`leader-${leaderKey}`);
+                addNotification(`${leader.name} ameondolewa kama ${leader.role}`);
+            }
+        });
+
+        function updateDeleteMemberSelect() {
+            const select = document.getElementById('deleteMember');
+            select.innerHTML = '<option value="">Chagua Mmember </option>';
+            members.forEach((member, index) => {
+                const option = document.createElement('option');
+                option.value = index;
+                option.textContent = member.fullName;
+                select.appendChild(option);
+            });
+        }
+
+        document.getElementById('deleteMemberBtn').addEventListener('click', () => {
+            if (!isAdminLoggedIn) {
+                alert('Lazima uingie kama Admin kwanza!');
+                document.getElementById('adminLoginPopup').style.display = 'flex';
+                return;
+            }
+            const index = document.getElementById('deleteMember').value;
+            if (index !== '') {
+                const member = members[index];
+                members.splice(index, 1);
+                membersRef.set(members);
+                updateMembersTable();
+                updateDeleteMemberSelect();
+                localStorage.removeItem(`registered-${member.phone}`);
+                addNotification(`${member.fullName} ameondolewa kutoka kwa member `);
+            }
+        });
+
+        function sanitizeKey(key) {
+            return key.replace(/[.#$/[\]]/g, '_');
+        }
+
+        function logVisitor() {
+            if (!canAccessSystem() && !isAdminLoggedIn) return;
+            const today = new Date().toDateString();
+            const lastVisitDate = visitors.length > 0 ? visitors[0].date : today;
+
+            if (lastVisitDate !== today) {
+                            visitorCountToday = 0;
+                visitors = [];
+                visitorscnRef.set(visitorCountToday);
+                visitorsRef.set(visitors);
+            }
+
+            fetch('https://api.ipify.org?format=json')
+                .then(response => response.json())
+                .then(data => {
+                    const ip = sanitizeKey(data.ip);
+                    if (isVpnBlocked && isVPN(ip)) {
+                        document.getElementById('vpnPopup').style.display = 'flex';
+                        return;
+                    }
+                    if (blockedIps.includes(ip)) {
+                        alert('IP yako imezuiwa na admin!');
+                        return;
+                    }
+
+                    if (!uniqueVisitors[ip]) {
+                        visitorCountToday++;
+                        uniqueVisitors[ip] = { count: 0, name: null };
+                    }
+                    uniqueVisitors[ip].count++;
+
+                    const latestMember = members.length > 0 ? members[members.length - 1] : null;
+                    uniqueVisitors[ip].name = latestMember ? latestMember.fullName : 'Hajajisajiri';
+
+                    visitors.push({
+                        ip,
+                        name: uniqueVisitors[ip].name,
+                        time: new Date().toLocaleString(),
+                        accessCount: uniqueVisitors[ip].count,
+                        date: today
+                    });
+                    visitorsRef.set(visitors);
+                    visitorscnRef.set(visitorCountToday);
+                    uniqueVisitorsRef.set(uniqueVisitors);
+                    updateVisitorLog();
+                    document.getElementById('onlineBar').textContent = `Sasa tupo ${months[date.getMonth()]} | Waliotembelea mfumo leo = ${visitorCountToday}`;
+                })
+                .catch(() => {
+                    visitorCountToday++;
+                    const ip = sanitizeKey('offline');
+                    if (blockedIps.includes(ip)) {
+                        alert('IP yako imezuiwa na admin!');
+                        return;
+                    }
+                    uniqueVisitors[ip] = uniqueVisitors[ip] || { count: 0, name: null };
+                    uniqueVisitors[ip].count++;
+                    uniqueVisitors[ip].name = members.length > 0 ? members[members.length - 1].fullName : 'Hajajisajiri';
+                    visitors.push({
+                        ip,
+                        name: uniqueVisitors[ip].name,
+                        time: new Date().toLocaleString(),
+                        accessCount: uniqueVisitors[ip].count,
+                        date: today
+                    });
+                    visitorsRef.set(visitors);
+                    visitorscnRef.set(visitorCountToday);
+                    uniqueVisitorsRef.set(uniqueVisitors);
+                    updateVisitorLog();
+                    document.getElementById('onlineBar').textContent = `Sasa tupo ${months[date.getMonth()]} | Waliotembelea mfumo leo = ${visitorCountToday}`;
+                });
+        }
+
+        function isVPN(ip) {
+            return ip.startsWith('10.') || ip.startsWith('192.168.') || ip.startsWith('172.');
+        }
+
+        function updateVisitorLog() {
+            const list = document.getElementById('visitorList');
+            list.innerHTML = '';
+            visitors.forEach(visitor => {
+                const li = document.createElement('li');
+                li.textContent = `${visitor.name} (${visitor.ip}) - ${visitor.time} (Ameingia mara ${visitor.accessCount})`;
+                list.appendChild(li);
+            });
+        }
+
+        document.getElementById('clearVisitorsBtn').addEventListener('click', () => {
+            if (!isAdminLoggedIn) {
+                alert('Lazima uingie kama Admin kwanza!');
+                document.getElementById('adminLoginPopup').style.display = 'flex';
+                return;
+            }
+            visitors = [];
+            visitorCountToday = 0;
+            uniqueVisitors = {};
+            visitorsRef.set(visitors);
+            visitorscnRef.set(visitorCountToday);
+            uniqueVisitorsRef.set(uniqueVisitors);
+            updateVisitorLog();
+            document.getElementById('onlineBar').textContent = `Sasa tupo ${months[date.getMonth()]} | Waliotembelea mfumo leo = ${visitorCountToday}`;
+        });
+
+        document.getElementById('addCommentBtn').addEventListener('click', () => {
+            if (!canAccessSystem() && !isAdminLoggedIn) {
+                alert('Muda wako umeisha au mfumo umesimamishwa! Subiri dakika ' + waitTime + ' au ingia kama Admin.');
+                return;
+            }
+            const comment = document.getElementById('commentInput').value;
+            if (comment) {
+                const latestMember = members.length > 0 ? members[members.length - 1] : { fullName: 'Hajajisajiri' };
+                comments.push({ name: latestMember.fullName, text: comment });
+                commentsRef.set(comments);
+                updateComments();
+                addNotification(`Maoni Mapya: ${comment.substring(0, 20)}...`);
+                document.getElementById('commentInput').value = '';
+            }
+        });
+
+        function updateComments() {
+            const list = document.getElementById('commentsList');
+            list.innerHTML = '';
+            const nameCount = {};
+            comments.forEach(comment => {
+                nameCount[comment.name] = (nameCount[comment.name] || 0) + 1;
+                const div = document.createElement('div');
+                div.classList.add('comment');
+                const nameClass = nameCount[comment.name] > 1 ? (nameCount[comment.name] % 2 === 0 ? 'name-right' : 'name-left') : 'name-left';
+                div.innerHTML = `
+                    <span class="${nameClass}">${comment.name}</span>: ${comment.text}
+                    <span class="ticks"><span style="color: #1E90FF;">✔</span><span style="color: #32CD32;">✔</span></span>
+                `;
+                list.appendChild(div);
+            });
+        }
+
+        function closePopup(popupId) {
+            document.getElementById(popupId).style.display = 'none';
+        }
+
+        function addNotification(message) {
+            notifications.unshift({ message, time: new Date().toLocaleString() });
+            if (notifications.length > 10) notifications.pop();
+            notificationsRef.set(notifications);
+            updateNotifications();
+        }
+
+        function updateNotifications() {
+            const list = document.getElementById('notificationsList');
+            list.innerHTML = '';
+            notifications.forEach(note => {
+                const div = document.createElement('div');
+                div.classList.add('comment');
+                div.innerHTML = `<strong>${note.time}</strong>: ${note.message}`;
+                list.appendChild(div);
+            });
+        }
+
+        document.getElementById('generateReportBtn').addEventListener('click', () => {
+            if (!isAdminLoggedIn) {
+                alert('Lazima uingie kama Admin kwanza!');
+                document.getElementById('adminLoginPopup').style.display = 'flex';
+                return;
+            }
+            const report = members.map(m => `${m.fullName}, ${m.phone}, ${m.region}, ${m.skills}`).join('\n');
+            const blob = new Blob([report], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'Ripoti_member .txt';
+            a.click();
+            URL.revokeObjectURL(url);
+        });
+
+        document.getElementById('exportCommentsBtn').addEventListener('click', () => {
+            if (!isAdminLoggedIn) {
+                alert('Lazima uingie kama Admin kwanza!');
+                document.getElementById('adminLoginPopup').style.display = 'flex';
+                return;
+            }
+            const blob = new Blob([comments.map(c => `${c.name}: ${c.text}`).join('\n')], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'Maoni.txt';
+            a.click();
+            URL.revokeObjectURL(url);
+        });
+
+        document.getElementById('systemStatusBtn').addEventListener('click', () => {
+            if (!isAdminLoggedIn) {
+                alert('Lazima uingie kama Admin kwanza!');
+                document.getElementById('adminLoginPopup').style.display = 'flex';
+                return;
+            }
+            const status = `Hali ya Mfumo:\n- Imefungwa: ${isSystemLocked ? 'Ndiyo' : 'Hapana'}\n- VPN Imezuiwa: ${isVpnBlocked ? 'Ndiyo' : 'Hapana'}\n- Muda wa Kukaa: ${sessionTimeout || 'Haujawekwa'} dakika\n- Muda wa Kusubiri: ${waitTime} dakika\n- member : ${members.length}\n- Viongozi: ${leaders.length}\n- Waliotembelea mfumo leo = ${visitorCountToday}\n- Maudhui Yaliyojifunzwa: ${learnedContent.length}`;
+            alert(status);
+        });
+
+        document.getElementById('blockIpBtn').addEventListener('click', () => {
+            if (!isAdminLoggedIn) {
+                alert('Lazima uingie kama Admin kwanza!');
+                document.getElementById('adminLoginPopup').style.display = 'flex';
+                return;
+            }
+            const ip = document.getElementById('blockIp').value;
+            if (ip && !blockedIps.includes(ip)) {
+                blockedIps.push(ip);
+                blockedIpsRef.set(blockedIps);
+                alert(`IP ${ip} imezuiwa!`);
+                document.getElementById('blockIp').value = '';
+            } else {
+                alert('IP tayari imezuiwa au haijaingizwa!');
+            }
+        });
+
+        document.getElementById('addLearnedContentBtn').addEventListener('click', () => {
+            if (!isAdminLoggedIn) {
+                alert('Lazima uingie kama Admin kwanza!');
+                document.getElementById('adminLoginPopup').style.display = 'flex';
+                return;
+            }
+            const content = document.getElementById('learnedContent').value;
+            if (content) {
+                learnedContent.push(content);
+                learnedContentRef.set(learnedContent);
+                updateLearnedContent();
+                addNotification(`Maudhui Mapya Yaliyojifunzwa: ${content.substring(0, 20)}...`);
+                document.getElementById('learnedContent').value = '';
+                alert('Maudhui yameongezwa!');
+            } else {
+                alert('Tafadhali andika maudhui!');
+            }
+        });
+
+        document.getElementById('editLearnedContentBtn').addEventListener('click', () => {
+            if (!isAdminLoggedIn) {
+                alert('Lazima uingie kama Admin kwanza!');
+                document.getElementById('adminLoginPopup').style.display = 'flex';
+                return;
+            }
+            const index = document.getElementById('editLearnedContent').value;
+            if (index !== '') {
+                document.getElementById('editLearnedContentText').value = learnedContent[index];
+                document.getElementById('editLearnedContentPopup').style.display = 'flex';
+                document.getElementById('saveEditedContentBtn').onclick = () => {
+                    const newContent = document.getElementById('editLearnedContentText').value;
+                    if (newContent) {
+                        learnedContent[index] = newContent;
+                        learnedContentRef.set(learnedContent);
+                        updateLearnedContent();
+                        addNotification(`Maudhui Yamehaririwa: ${newContent.substring(0, 20)}...`);
+                        closePopup('editLearnedContentPopup');
+                        alert('Maudhui yamehaririwa!');
+                    } else {
+                        alert('Tafadhali andika maudhui!');
+                    }
+                };
+            } else {
+                alert('Chagua maudhui ya kuhariri!');
+            }
+        });
+
+        document.getElementById('deleteLearnedContentBtn').addEventListener('click', () => {
+            if (!isAdminLoggedIn) {
+                alert('Lazima uingie kama Admin kwanza!');
+                document.getElementById('adminLoginPopup').style.display = 'flex';
+                return;
+            }
+            const index = document.getElementById('editLearnedContent').value;
+            if (index !== '') {
+                const content = learnedContent[index];
+                learnedContent.splice(index, 1);
+                learnedContentRef.set(learnedContent);
+                updateLearnedContent();
+                addNotification(`Maudhui Yamefutwa: ${content.substring(0, 20)}...`);
+                alert('Maudhui yamefutwa!');
+            } else {
+                alert('Chagua maudhui ya kufuta!');
+            }
+        });
+
+        function updateLearnedContent() {
+            const list = document.getElementById('learnedContentList');
+            const select = document.getElementById('editLearnedContent');
+            list.innerHTML = '';
+            select.innerHTML = '<option value="">Chagua Maudhui</option>';
+            if (learnedContent.length === 0) {
+                list.innerHTML = '<p>Hakuna maudhui yaliyojifunzwa bado.</p>';
+            } else {
+                learnedContent.forEach((content, index) => {
+                    const item = document.createElement('div');
+                    item.classList.add('learned-content-item');
+                    item.innerHTML = `
+                        <span class="number">${index + 1}</span>
+                        <p>${content}</p>
+                    `;
+                    list.appendChild(item);
+
+                    const option = document.createElement('option');
+                    option.value = index;
+                    option.textContent = content.substring(0, 30) + (content.length > 30 ? '...' : '');
+                    select.appendChild(option);
+                });
+            }
+            updateUnderstanding();
+        }
+
+        function updateUnderstanding() {
+            const tbody = document.getElementById('understandingList');
+            tbody.innerHTML = '';
+            members.forEach(member => {
+                learnedContent.forEach((content, contentIndex) => {
+                    const tr = document.createElement('tr');
+                    const understood = understanding[member.phone]?.[contentIndex]?.understood || false;
+                    tr.innerHTML = `
+                        <td>${member.fullName}</td>
+                        <td>${content}</td>
+                        <td><button class="btn" onclick="toggleUnderstanding('${member.phone}', ${contentIndex}, true)">${understood ? '✅' : '⬜'}</button></td>
+                        <td><button class="btn" onclick="toggleUnderstanding('${member.phone}', ${contentIndex}, false)">${understood ? '⬜' : '❌'}</button></td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            });
+            updateLearningStatus();
+        }
+
+        function toggleUnderstanding(phone, contentIndex, understood) {
+            if (!understanding[phone]) understanding[phone] = {};
+            understanding[phone][contentIndex] = { understood };
+            understandingRef.set(understanding);
+            updateUnderstanding();
+        }
+
+        function updateLearningStatus() {
+            const tbody = document.getElementById('learningStatusList');
+            tbody.innerHTML = '';
+            members.forEach(member => {
+                learnedContent.forEach((content, contentIndex) => {
+                    const understood = understanding[member.phone]?.[contentIndex]?.understood || false;
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${member.fullName}</td>
+                        <td>${content}</td>
+                        <td>${understood ? '✅ Nimeelewa' : '❌ Sijaelewa'}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            });
+        }
+
+        function createRain(containerId) {
+            const container = document.getElementById(containerId);
+            for (let i = 0; i < 50; i++) {
+                const rainDrop = document.createElement('div');
+                rainDrop.classList.add('rain');
+                rainDrop.style.left = `${Math.random() * 100}%`;
+                rainDrop.style.animationDuration = `${Math.random() * 2 + 1}s`;
+                rainDrop.style.animationDelay = `${Math.random() * 2}s`;
+                container.appendChild(rainDrop);
+            }
+        }
+
+            document.addEventListener('DOMContentLoaded', () => {
+                createRain('loadingScreen');
+                createRain('headerRain');
+                setTimeout(() => {
+                    document.getElementById('loadingScreen').style.display = 'none';
+                    document.getElementById('mainContainer').style.display = 'block';
+                    updateUI();
+                    if (canAccessSystem()) logVisitor();
+                }, 3000);
+
+                // Load Firebase data on page load
+                membersRef.on('value', (snapshot) => {
+                    members = snapshot.val() || [];
+                    updateMembersTable();
+                    updateDeleteMemberSelect();
+                });
+
+                leadersRef.on('value', (snapshot) => {
+                    leaders = snapshot.val() || [];
+                    updateLeaders();
+                    updateDeleteLeaderSelect();
+                });
+
+                visitorsRef.on('value', (snapshot) => {
+                    visitors = snapshot.val() || [];
+                    updateVisitorLog();
+                });
+
+                visitorscnRef.on('value', (snapshot) => {
+                    visitorCountToday = snapshot.val() || 0;
+                    document.getElementById('onlineBar').textContent = `Sasa tupo ${months[date.getMonth()]} | Waliotembelea mfumo leo = ${visitorCountToday}`;
+                });
+
+                uniqueVisitorsRef.on('value', (snapshot) => {
+                    uniqueVisitors = snapshot.val() || {};
+                });
+
+                announcementRef.on('value', (snapshot) => {
+                    announcement = snapshot.val() || '';
+                    updateAnnouncement();
+                });
+
+                systemLockedRef.on('value', (snapshot) => {
+                    isSystemLocked = snapshot.val() || false;
+                    updateSystemState();
+                });
+
+                vpnBlockedRef.on('value', (snapshot) => {
+                    isVpnBlocked = snapshot.val() || false;
+                });
+
+                sessionTimeoutRef.on('value', (snapshot) => {
+                    sessionTimeout = snapshot.val() || 0;
+                    if (sessionTimeout > 0) setSessionTimeout(sessionTimeout);
+                });
+
+                waitTimeRef.on('value', (snapshot) => {
+                    waitTime = snapshot.val() || 2;
+                });
+
+                blockedIpsRef.on('value', (snapshot) => {
+                    blockedIps = snapshot.val() || [];
+                });
+
+                notificationsRef.on('value', (snapshot) => {
+                    notifications = snapshot.val() || [];
+                    updateNotifications();
+                });
+
+                learnedContentRef.on('value', (snapshot) => {
+                    learnedContent = snapshot.val() || [];
+                    updateLearnedContent();
+                });
+
+                understandingRef.on('value', (snapshot) => {
+                    understanding = snapshot.val() || {};
+                    updateUnderstanding();
+                });
+
+                commentsRef.on('value', (snapshot) => {
+                    comments = snapshot.val() || [];
+                    updateComments();
+                });
+
+                // Check session timeout on page load
+                if (sessionTimeout > 0 && !isAdminLoggedIn) {
+                    setSessionTimeout(sessionTimeout);
+                }
+
+                // Redirect to loading screen if wait time is active
+                if (!canAccessSystem() && !isAdminLoggedIn) {
+                    document.getElementById('mainContainer').style.display = 'none';
+                    document.getElementById('loadingScreen').style.display = 'flex';
+                    document.getElementById('loadingMessage').textContent = `Muda wako umeisha. Subiri dakika ${waitTime} uingie tena.`;
+                    setTimeout(() => {
+                        if (canAccessSystem()) {
+                            document.getElementById('loadingScreen').style.display = 'none';
+                            document.getElementById('mainContainer').style.display = 'block';
+                            document.getElementById('loadingMessage').textContent = 'Karibu kwenye ICT Academy!';
+                        }
+                    }, waitTime * 60 * 1000);
+                }
+            });
+        </script>
+</body>
+</html>
